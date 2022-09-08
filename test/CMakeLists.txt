@@ -22,3 +22,6 @@ file(GLOB all_SRCS
 add_executable(test-json-packer ${all_SRCS})
 
 target_link_libraries(test-json-packer PRIVATE unity)
+
+add_test(NAME test-json-packer
+         COMMAND test-json-packer)

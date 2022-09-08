@@ -4,7 +4,7 @@ language: c
 #sudo: false # only for faster builds
 
 install:
-- cd ${TRAVIS_BUILD_DIR} && mkdir -p build
+- cd ${TRAVIS_BUILD_DIR} && mkdir -p build 
 
 # install latest LCOV (1.9 was failing for me) [1]
 
@@ -19,6 +19,7 @@ install:
 before_script: 
 - cd "${TRAVIS_BUILD_DIR}/build"
 - lcov --directory . --zerocounters
+- cmake ..
 
 # Compiler selection
 compiler:
@@ -27,8 +28,7 @@ compiler:
 
 # Build steps
 script: 
-  - cd "${TRAVIS_BUILD_DIR}/build"
-  - cmake .. && make && test/test-json-packer
+  make && test/test-json-packer
 
 
 after_success:
