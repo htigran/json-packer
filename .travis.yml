@@ -22,14 +22,13 @@ before_script:
 
 # Compiler selection
 compiler:
-  - clang
   - gcc
 
 
 # Build steps
 script: 
   - cd ${TRAVIS_BUILD_DIR}
-  - mkdir -p build && cd build & make && ./json-packer
+  - mkdir -p build && cd build & cmake .. && make && ./json-packer
 
 
 after_success:
