@@ -6,11 +6,11 @@ FetchContent_Declare(
   GIT_TAG        v2.5.2
 )
 
-include_directories("${unity_SOURCE_DIR}/src")
-
 # After the following call, the CMake targets defined by googletest and
 # Catch2 will be defined and available to the rest of the build
 FetchContent_MakeAvailable(unity)
+
+include_directories("${unity_SOURCE_DIR}/src")
 
 # Just add whatever is in those folders.
 file(GLOB all_SRCS
