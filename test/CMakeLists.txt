@@ -5,12 +5,18 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/ThrowTheSwitch/Unity.git
   GIT_TAG        v2.5.2
 )
-
-# After the following call, the CMake targets defined by googletest and
-# Catch2 will be defined and available to the rest of the build
 FetchContent_MakeAvailable(unity)
-
 include_directories("${unity_SOURCE_DIR}/src")
+
+
+FetchContent_Declare(
+  yajl
+  GIT_REPOSITORY https://github.com/lloyd/yajl.git
+  GIT_TAG        2.1.0  
+)
+FetchContent_MakeAvailable(yajl)
+include_directories("${yajl_SOURCE_DIR}/src/api")
+
 
 # Just add whatever is in those folders.
 file(GLOB all_SRCS
@@ -21,7 +27,7 @@ file(GLOB all_SRCS
 # Build the target from the list of all sources
 add_executable(test-json-packer ${all_SRCS})
 
-target_link_libraries(test-json-packer PRIVATE unity)
+target_link_libraries(test-json-packer PRIVATE unity yajl)
 
 add_test(NAME test-json-packer
          COMMAND test-json-packer)
