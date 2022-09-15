@@ -13,7 +13,7 @@ project(
 
 # If you set any CMAKE_ variables, that can go here.
 # (But usually don't do this, except maybe for C++ standard)
-set(CMAKE_C_STANDARD 11)
+#set(CMAKE_C_STANDARD 11)
 
 # Find packages go here.
 
@@ -40,9 +40,19 @@ file(GLOB all_SRCS
 # Build the target from the list of all sources
 add_executable(json-packer ${all_SRCS})
 
+include(FetchContent)
+
+FetchContent_Declare(
+  yajl
+  GIT_REPOSITORY https://github.com/lloyd/yajl.git
+  GIT_TAG        2.1.0  
+)
+FetchContent_MakeAvailable(yajl)
+include_directories("${yajl_BINARY_DIR}/yajl-2.1.0/include/")
+
 # Make sure you link your targets with this command. It can also link libraries and
 # even flags, so linking a target that does not exist will not give a configure-time error.
-#target_link_libraries(json-packer PRIVATE MyLibExample)
+target_link_libraries(json-packer PRIVATE yajl)
 
 enable_testing()
 add_subdirectory(test)
