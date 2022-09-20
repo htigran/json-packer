@@ -30,6 +30,29 @@ tlv_box_t *tlv_box_create()
     return box;
 }
 
+int tlv_box_putobject(tlv_box_t *box, int type, void *value, int length)
+{
+    if (box->m_serialized_buffer != NULL) {
+        return -1;
+    }
+
+    tlv_t *tlv = (tlv_t *)malloc(sizeof(tlv_t));
+    tlv->type = type;
+    tlv->length = length;
+    tlv->value = (unsigned char *) malloc(length);
+    memcpy(tlv->value, value, length);
+
+    value_t object;
+    object.value = tlv;
+
+    if (key_list_add(box->m_list, type, object) != 0) {
+        return -1;
+    }    
+    box->m_serialized_bytes += sizeof(int) * 2 + length;
+    
+    return 0;
+}
+
 tlv_box_t *tlv_box_parse(unsigned char *buffer, int buffersize)
 {
     tlv_box_t *box = tlv_box_create();
@@ -73,29 +96,6 @@ unsigned char *tlv_box_get_buffer(tlv_box_t *box)
 int tlv_box_get_size(tlv_box_t *box)
 {
     return box->m_serialized_bytes;
-}
-
-int tlv_box_putobject(tlv_box_t *box, int type, void *value, int length)
-{
-    if (box->m_serialized_buffer != NULL) {
-        return -1;
-    }
-
-    tlv_t *tlv = (tlv_t *)malloc(sizeof(tlv_t));
-    tlv->type = type;
-    tlv->length = length;
-    tlv->value = (unsigned char *) malloc(length);
-    memcpy(tlv->value, value, length);
-
-    value_t object;
-    object.value = tlv;
-
-    if (key_list_add(box->m_list, type, object) != 0) {
-        return -1;
-    }    
-    box->m_serialized_bytes += sizeof(int) * 2 + length;
-    
-    return 0;
 }
 
 int tlv_box_put_char(tlv_box_t *box, int type, char value)

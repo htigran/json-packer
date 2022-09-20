@@ -29,7 +29,19 @@ project(
 include_directories(
         ${PROJECT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/src
+        ${PROJECT_SOURCE_DIR}/lib/TLV/c
 )
+
+# Build TLV lib
+file(GLOB tlvlib_SRCS
+        ${PROJECT_SOURCE_DIR}/lib/TLV/c/*.h
+        ${PROJECT_SOURCE_DIR}/lib/TLV/c/*.c
+        )
+add_library(tlvlib SHARED
+  ${tlvlib_SRCS}
+)
+
+target_include_directories(tlvlib PRIVATE ${PROJECT_SOURCE_DIR}/lib/TLV/c/)
 
 # Just add whatever is in those folders.
 file(GLOB all_SRCS
@@ -52,7 +64,7 @@ include_directories("${yajl_BINARY_DIR}/yajl-2.1.0/include/")
 
 # Make sure you link your targets with this command. It can also link libraries and
 # even flags, so linking a target that does not exist will not give a configure-time error.
-target_link_libraries(json-packer PRIVATE yajl)
+target_link_libraries(json-packer PRIVATE yajl tlvlib)
 
 enable_testing()
 add_subdirectory(test)
