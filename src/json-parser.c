@@ -1,5 +1,5 @@
 
-#include "config-parser.h"
+#include "json-parser.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -19,7 +19,7 @@ const char* read_config_file()
     if(f == NULL)
     {
         fprintf(stderr, "Error! opening the config file at %s\n", config_file_path);   
-        exit(1);             
+        exit(1);
     }
     fseek(f, 0, SEEK_END);
     long fsize = ftell(f);

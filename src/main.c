@@ -1,10 +1,9 @@
-
 #include <stdio.h>
 #include <string.h>
 
 #include <yajl/yajl_tree.h>
 
-#include "config-parser.h"
+#include "json-parser.h"
 
 
 int main()
