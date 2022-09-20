@@ -8,7 +8,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(unity)
 include_directories("${unity_SOURCE_DIR}/src")
 
-
 FetchContent_Declare(
   yajl
   GIT_REPOSITORY https://github.com/lloyd/yajl.git
