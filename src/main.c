@@ -3,15 +3,10 @@
 
 #include <yajl/yajl_tree.h>
 
-#include "json-parser.h"
+#include "json-packer.h"
 
 
 int main()
 {
-    const char* input_path = get_input_file_path();
-    if (NULL == input_path) {
-        return 1;
-    }
-    printf("%s \n", input_path);
-    return 0;
+    return parse_input();
 }
