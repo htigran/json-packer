@@ -9,6 +9,7 @@
 #include <stdbool.h>
 
 // built by us
+#include <log.h>
 #include <yajl/yajl_tree.h>
 
 /// @brief
@@ -24,23 +25,23 @@ void parse_line(char *line, size_t len)
     /* parse error handling */
     if (node == NULL)
     {
-        fprintf(stderr, "Error! Can't parse the input file at %s", INPUT_PATH);
+        log_trace("Error! Can't parse the input file at %s", INPUT_FILE_PATH);
         if (strlen(errbuf))
         {
-            fprintf(stderr, " %s", errbuf);
+            log_trace(" %s", errbuf);
         }
         else
         {
-            fprintf(stderr, "unknown error");
+            log_trace("unknown error");
         }
-        fprintf(stderr, "\n");
+        log_trace("\n");
         exit(1);
     }
     if (node != NULL)
     {
         if ((node)->type == yajl_t_object)
         {
-            printf("is object\n");
+            log_trace("is object\n");
             size_t nelem = node->u.object.len;
             int ii;
             for (ii = 0; ii < nelem; ++ii)
@@ -51,30 +52,30 @@ void parse_line(char *line, size_t len)
                 yajl_val val = node->u.object.values[ii]; // val
                 if (YAJL_IS_DOUBLE(val))
                 {
-                    printf("double: %s/%f\n", key, val->u.number.d);
+                    log_trace("double: %s/%f\n", key, val->u.number.d);
                 }
                 else if (YAJL_IS_INTEGER(val))
                 {
-                    printf("int: %s/%d\n", key, val->u.number.i);
+                    log_trace("int: %s/%d\n", key, val->u.number.i);
                 }
                 else if (YAJL_IS_STRING(val))
                 {
-                    printf("string: %s/%s\n", key, val->u.string);
+                    log_trace("string: %s/%s\n", key, val->u.string);
                 }
                 else if (YAJL_IS_TRUE(val))
                 {
-                    printf("bool: %s/%B\n", key, true);
+                    log_trace("bool: %s/%B\n", key, true);
                 }
                 else if (YAJL_IS_FALSE(val))
                 {
-                    printf("bool: %s/%B\n", key, false);
+                    log_trace("bool: %s/%B\n", key, false);
                 }
             }
         }
     }
     else
     {
-        printf("Error! Unknown input file format");
+        log_error("Error! Unknown input file format");
         exit(1);
     }
     yajl_tree_free(node);
@@ -82,22 +83,23 @@ void parse_line(char *line, size_t len)
 
 int parse_input()
 {
-    FILE *fp = fopen(INPUT_PATH, "rb");
+    log_trace("Parsing the input");
+    FILE *fp = fopen(INPUT_FILE_PATH, "rb");
     ssize_t read;
     char *line = NULL;
     size_t len = 0;
 
     if (fp == NULL)
     {
-        fprintf(stderr, "Error! opening the config file at %s\n", INPUT_PATH);
+        log_trace("Error! opening the config file at %s\n", INPUT_FILE_PATH);
         exit(1);
     }
 
     while ((read = getline(&line, &len, fp)) != -1)
     {
         parse_line(line, len);
-        printf("Retrieved line of length %zu:\n", read);
-        printf("%s", line);
+        log_trace("Retrieved line of length %zu:\n", read);
+        log_trace("%s", line);
     }
 
     fclose(fp);

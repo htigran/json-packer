@@ -33,6 +33,7 @@ include_directories(
 )
 
 # Build TLV lib
+#================================================================
 file(GLOB tlvlib_SRCS
         ${PROJECT_SOURCE_DIR}/lib/TLV/c/*.h
         ${PROJECT_SOURCE_DIR}/lib/TLV/c/*.c
@@ -40,31 +41,48 @@ file(GLOB tlvlib_SRCS
 add_library(tlvlib SHARED
   ${tlvlib_SRCS}
 )
-
 target_include_directories(tlvlib PRIVATE ${PROJECT_SOURCE_DIR}/lib/TLV/c/)
+#================================================================
 
-# Just add whatever is in those folders.
-file(GLOB all_SRCS
-        "${PROJECT_SOURCE_DIR}/include/*.h"
-        "${PROJECT_SOURCE_DIR}/src/*.c"
+# Build Log.c lib
+#================================================================
+file(GLOB logclib_SRCS
+        ${PROJECT_SOURCE_DIR}/lib/log.c/src/*.h
+        ${PROJECT_SOURCE_DIR}/lib/log.c/src/*.c
         )
+add_library(logclib SHARED
+  ${logclib_SRCS}
+)
+target_include_directories(logclib PRIVATE ${PROJECT_SOURCE_DIR}/lib/log.c/)
+#================================================================
 
-# Build the target from the list of all sources
-add_executable(json-packer ${all_SRCS})
-
+# Build yajl lib
+#================================================================
 include(FetchContent)
-
 FetchContent_Declare(
   yajl
   GIT_REPOSITORY https://github.com/lloyd/yajl.git
   GIT_TAG        2.1.0  
 )
 FetchContent_MakeAvailable(yajl)
-include_directories("${yajl_BINARY_DIR}/yajl-2.1.0/include/")
+#================================================================
 
-# Make sure you link your targets with this command. It can also link libraries and
-# even flags, so linking a target that does not exist will not give a configure-time error.
-target_link_libraries(json-packer PRIVATE yajl tlvlib)
+# Build json-packer executable
+#================================================================
+# Just add whatever is in those folders.
+include_directories("${yajl_BINARY_DIR}/yajl-2.1.0/include/")
+include_directories("${PROJECT_SOURCE_DIR}/lib/log.c/src/")
+
+file(GLOB all_SRCS
+  "${PROJECT_SOURCE_DIR}/include/*.h"
+  "${PROJECT_SOURCE_DIR}/src/*.c"
+)
+# Build the target from the list of all sources
+add_executable(json-packer ${all_SRCS})
+# Make sure you link your targets with this command. It can also link libraries and even flags, so linking a target that does not exist will not give a configure-time error.
+target_link_libraries(json-packer PRIVATE yajl tlvlib logclib)
+#================================================================
+
 
 enable_testing()
 add_subdirectory(test)
