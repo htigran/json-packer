@@ -10,12 +10,31 @@
 
 // built by us
 #include <log.h>
-#include <yajl/yajl_tree.h>
+#include <tlv_box.h>
+
+#include "json-packer-dict.h"
+
+void tlv_box_store(tlv_box_t* box, FILE* output_fp)
+{
+    unsigned char* buffer = tlv_box_get_buffer(box);
+    int buffer_size = tlv_box_get_size(box);
+    size_t written_size = fwrite(buffer, sizeof(unsigned char), 
+                                buffer_size, output_fp);
+    if (written_size != buffer_size) 
+    {
+        log_error(
+            "Error! can't write to output file! (%d out of %d is written)", 
+            written_size, buffer_size);
+        exit(1);
+    } else {
+        log_info("Written %d bytes", written_size);
+    }
+}
 
 /// @brief
 /// @param line
 /// @param len
-void parse_line(char *line, size_t len)
+yajl_val parse_line(char *line, size_t len)
 {
     yajl_val node;
     char errbuf[1024];
@@ -25,84 +44,41 @@ void parse_line(char *line, size_t len)
     /* parse error handling */
     if (node == NULL)
     {
-        log_trace("Error! Can't parse the input file at %s", INPUT_FILE_PATH);
+        log_error("Error! Can't parse the input file at %s", INPUT_FILE_PATH);
         if (strlen(errbuf))
         {
-            log_trace(" %s", errbuf);
+            log_error(" %s", errbuf);
         }
         else
         {
-            log_trace("unknown error");
+            log_error("unknown error");
         }
-        log_trace("\n");
         exit(1);
     }
-    if (node != NULL)
-    {
-        if ((node)->type == yajl_t_object)
-        {
-            log_trace("is object\n");
-            size_t nelem = node->u.object.len;
-            int ii;
-            for (ii = 0; ii < nelem; ++ii)
-            {
-                // key is just char *
-                const char *key = node->u.object.keys[ii]; // key
-                // values can be different types
-                yajl_val val = node->u.object.values[ii]; // val
-                if (YAJL_IS_DOUBLE(val))
-                {
-                    log_trace("double: %s/%f\n", key, val->u.number.d);
-                }
-                else if (YAJL_IS_INTEGER(val))
-                {
-                    log_trace("int: %s/%d\n", key, val->u.number.i);
-                }
-                else if (YAJL_IS_STRING(val))
-                {
-                    log_trace("string: %s/%s\n", key, val->u.string);
-                }
-                else if (YAJL_IS_TRUE(val))
-                {
-                    log_trace("bool: %s/%B\n", key, true);
-                }
-                else if (YAJL_IS_FALSE(val))
-                {
-                    log_trace("bool: %s/%B\n", key, false);
-                }
-            }
-        }
-    }
-    else
-    {
-        log_error("Error! Unknown input file format");
-        exit(1);
-    }
-    yajl_tree_free(node);
+    return node;
 }
 
-int parse_input()
+/// @brief
+/// @return
+int parse_input(FILE* input_fp, FILE* output_fp)
 {
-    log_trace("Parsing the input");
-    FILE *fp = fopen(INPUT_FILE_PATH, "rb");
+    log_info("Parsing the input");
     ssize_t read;
     char *line = NULL;
     size_t len = 0;
 
-    if (fp == NULL)
+    while ((read = getline(&line, &len, input_fp)) != -1)
     {
-        log_trace("Error! opening the config file at %s\n", INPUT_FILE_PATH);
-        exit(1);
-    }
+        yajl_val node = parse_line(line, len);
+        log_info("Retrieved line of length %zu:\n", read);
+        log_info("%s", line);
 
-    while ((read = getline(&line, &len, fp)) != -1)
-    {
-        parse_line(line, len);
-        log_trace("Retrieved line of length %zu:\n", read);
-        log_trace("%s", line);
+        tlv_box_t* box = dict_serialize(node);
+        tlv_box_store(box, output_fp);
+        tlv_box_destroy(box);
+        yajl_tree_free(node);
+        dict_reset();
     }
-
-    fclose(fp);
 
     return 0;
 }

@@ -98,6 +98,11 @@ int tlv_box_get_size(tlv_box_t *box)
     return box->m_serialized_bytes;
 }
 
+int tlv_box_put_bool(tlv_box_t *box, int type, bool value)
+{
+    return tlv_box_putobject(box, type, &value, sizeof(bool));
+}
+
 int tlv_box_put_char(tlv_box_t *box, int type, char value)
 {
     return tlv_box_putobject(box, type, &value, sizeof(char));
