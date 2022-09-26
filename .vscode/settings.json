@@ -2,6 +2,7 @@
     "files.associations": {
         "string": "c",
         "iosfwd": "c",
-        "__node_handle": "c"
+        "__node_handle": "c",
+        "tlv_box.h": "c"
     }
 }

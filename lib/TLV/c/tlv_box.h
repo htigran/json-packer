@@ -15,6 +15,8 @@
 
 #include "key_list.h"
 
+#include <stdbool.h>
+
 typedef struct _tlv {
     int type;
     int length;
@@ -34,6 +36,7 @@ int tlv_box_destroy(tlv_box_t *box);
 unsigned char *tlv_box_get_buffer(tlv_box_t *box);
 int tlv_box_get_size(tlv_box_t *box);
 
+int tlv_box_put_bool(tlv_box_t *box, int type, bool value);
 int tlv_box_put_char(tlv_box_t *box,int type,char value);
 int tlv_box_put_short(tlv_box_t *box,int type,short value);
 int tlv_box_put_int(tlv_box_t *box,int type,int value);

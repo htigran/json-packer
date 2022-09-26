@@ -7,7 +7,6 @@
 #include <config.h>
 #include "json-packer.h"
 
-
 void configure_logger(FILE *log_fp)
 {
     log_set_quiet(LOG_QUITE);

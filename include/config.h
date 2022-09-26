@@ -6,10 +6,10 @@
 
 /* Available log levels are
  * LOG_TRACE
- * LOG_DEBUG 
- * LOG_INFO 
- * LOG_WARN 
- * LOG_ERROR 
+ * LOG_DEBUG
+ * LOG_INFO
+ * LOG_WARN
+ * LOG_ERROR
  * LOG_FATAL
  */
 #define LOG_LEVEL LOG_TRACE
@@ -18,4 +18,4 @@
 // to disable coloring comment out the following line
 #define LOG_USE_COLOR
 
-#endif //CONFIG_H
+#endif // CONFIG_H
