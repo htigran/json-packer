@@ -3,6 +3,8 @@
         "string": "c",
         "iosfwd": "c",
         "__node_handle": "c",
-        "tlv_box.h": "c"
+        "tlv_box.h": "c",
+        "config.h": "c",
+        "json-packer-dict.h": "c"
     }
 }
