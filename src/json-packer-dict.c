@@ -5,22 +5,6 @@
 #include "json-packer-dict.h"
 #include <config.h>
 
-dict_item_t all_items[MAX_ITEMS_PER_LINE];
-int num_items = 0;
-
-void dict_add_item(int type, int key, void* value)
-{
-    all_items[num_items].type = type;
-    all_items[num_items].key = key;
-    all_items[num_items].value = value;
-    num_items++;
-}
-
-void dict_reset()
-{
-    num_items = 0;
-}
-
 /// @brief
 /// @param node
 tlv_box_t* dict_serialize(yajl_val node)

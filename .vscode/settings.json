@@ -5,6 +5,7 @@
         "__node_handle": "c",
         "tlv_box.h": "c",
         "config.h": "c",
-        "json-packer-dict.h": "c"
+        "json-packer-dict.h": "c",
+        "unity.h": "c"
     }
 }

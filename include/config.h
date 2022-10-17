@@ -25,6 +25,6 @@
 #define TLV_TYPE_STR 0x02
 #define TLV_TYPE_BOOL 0x03
 
-#define MAX_ITEMS_PER_LINE 100
+#define MAX_LINE_SIZE 100
 
 #endif // CONFIG_H

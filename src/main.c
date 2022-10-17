@@ -1,12 +1,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <limits.h>
 
 #include <log.h>
 #include <yajl/yajl_tree.h>
 
 #include <config.h>
 #include "json-packer.h"
+
+#include <unistd.h>
+
 
 FILE* configure_logger()
 {
@@ -44,14 +49,25 @@ FILE* configure_output()
     return output_fp;
 }
 
+void print_info()
+{
+    char cwd[PATH_MAX];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        log_info("Current working dir: %s\n", cwd);
+    } else {
+        log_error("getcwd() error");
+    }
+}
+
 int main()
 {
+    print_info();
+    
     FILE* log_fp = configure_logger();
     FILE* input_fp = configure_input();
     FILE* output_fp = configure_output();
 
     parse_input(input_fp, output_fp);
-
 
     fclose(log_fp);
     fclose(input_fp);
