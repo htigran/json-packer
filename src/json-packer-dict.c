@@ -5,7 +5,7 @@
 #include "json-packer-dict.h"
 #include <config.h>
 
-dict_item_t all_items[MAX_ITEMS_PER_LINE];
+dict_item_t all_items[MAX_LINE_SIZE];
 int num_items = 0;
 
 void dict_add_item(int type, int key, void* value)

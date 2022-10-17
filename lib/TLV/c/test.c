@@ -37,7 +37,7 @@ int main(int argc, char const *argv[])
     tlv_box_put_float(box, TEST_TYPE_5, (float)5.67);
     tlv_box_put_double(box, TEST_TYPE_6, (double)8.91);
     tlv_box_put_string(box, TEST_TYPE_7, (char *)"hello world !");    
-    unsigned char array[6] = {1, 2, 3, 4, 5, 6};
+    char array[6] = {1, 2, 3, 4, 5, 6};
     tlv_box_put_bytes(box,TEST_TYPE_8, array, 6);    
 
     if (tlv_box_serialize(box) != 0) {
@@ -134,7 +134,7 @@ int main(int argc, char const *argv[])
     }
 
     {
-        unsigned char value[128]; 
+        char value[128]; 
         int length = 128;
         if (tlv_box_get_bytes(parsedBox,TEST_TYPE_8, value, &length) != 0) {
             LOG("tlv_box_get_bytes failed !\n"); 

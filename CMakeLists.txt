@@ -73,12 +73,12 @@ FetchContent_MakeAvailable(yajl)
 include_directories("${yajl_BINARY_DIR}/yajl-2.1.0/include/")
 include_directories("${PROJECT_SOURCE_DIR}/lib/log.c/src/")
 
-file(GLOB all_SRCS
+file(GLOB main_SRCS
   "${PROJECT_SOURCE_DIR}/include/*.h"
   "${PROJECT_SOURCE_DIR}/src/*.c"
 )
 # Build the target from the list of all sources
-add_executable(json-packer ${all_SRCS})
+add_executable(json-packer ${main_SRCS})
 # Make sure you link your targets with this command. It can also link libraries and even flags, so linking a target that does not exist will not give a configure-time error.
 target_link_libraries(json-packer PRIVATE yajl tlvlib logclib)
 #================================================================

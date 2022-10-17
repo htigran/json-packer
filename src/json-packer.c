@@ -16,10 +16,12 @@
 
 void tlv_box_store(tlv_box_t* box, FILE* output_fp)
 {
-    unsigned char* buffer = tlv_box_get_buffer(box);
+    char* serialized_buffer = tlv_box_get_buffer(box);
+    
     int buffer_size = tlv_box_get_size(box);
-    size_t written_size = fwrite(buffer, sizeof(unsigned char), 
+    size_t written_size = fwrite(serialized_buffer, sizeof(char),
                                 buffer_size, output_fp);
+    
     if (written_size != buffer_size) 
     {
         log_error(
@@ -29,6 +31,8 @@ void tlv_box_store(tlv_box_t* box, FILE* output_fp)
     } else {
         log_info("Written %d bytes", written_size);
     }
+    
+    fputc('\n', output_fp);
 }
 
 /// @brief
@@ -64,8 +68,8 @@ int parse_input(FILE* input_fp, FILE* output_fp)
 {
     log_info("Parsing the input");
     ssize_t read;
-    char *line = NULL;
-    size_t len = 0;
+    char *line = (char*) malloc(MAX_LINE_SIZE);
+    size_t len = MAX_LINE_SIZE;
 
     while ((read = getline(&line, &len, input_fp)) != -1)
     {
@@ -79,6 +83,6 @@ int parse_input(FILE* input_fp, FILE* output_fp)
         yajl_tree_free(node);
         dict_reset();
     }
-
+    free(line);
     return 0;
 }
