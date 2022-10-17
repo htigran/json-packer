@@ -81,7 +81,6 @@ int parse_input(FILE* input_fp, FILE* output_fp)
         tlv_box_store(box, output_fp);
         tlv_box_destroy(box);
         yajl_tree_free(node);
-        dict_reset();
     }
     free(line);
     return 0;

@@ -42,7 +42,9 @@ compiler:
 
 # Build steps
 script: 
-  make && make test
+- cd "${TRAVIS_BUILD_DIR}"
+- cp extra/input.json build/ && cp extra/output.tlv build/test/
+- make && make test
 
 
 after_success:
