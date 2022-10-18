@@ -64,7 +64,7 @@ yajl_val parse_line(char *line, size_t len)
 
 /// @brief
 /// @return
-int parse_input(FILE* input_fp, FILE* output_fp)
+int process_input_file(FILE* input_fp, FILE* output_values_fp, FILE* output_keys_fp)
 {
     log_info("Parsing the input");
     ssize_t read;
@@ -77,9 +77,14 @@ int parse_input(FILE* input_fp, FILE* output_fp)
         log_info("Retrieved line of length %zu:\n", read);
         log_info("%s", line);
 
-        tlv_box_t* box = dict_serialize(node);
-        tlv_box_store(box, output_fp);
-        tlv_box_destroy(box);
+        tlv_box_t* box_values = box_serialize_values(node);
+        tlv_box_t* box_keys = box_serialize_keys(node);
+
+        tlv_box_store(box_values, output_values_fp);
+        tlv_box_store(box_keys, output_keys_fp);
+
+        tlv_box_destroy(box_values);
+        tlv_box_destroy(box_keys);
         yajl_tree_free(node);
     }
     free(line);

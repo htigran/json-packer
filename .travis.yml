@@ -43,7 +43,7 @@ compiler:
 # Build steps
 script: 
 - cd "${TRAVIS_BUILD_DIR}"
-- cp extra/input.json build/ && cp extra/output.tlv build/test/
+- cp extra/input.json build/ && cp extra/values.tlv build/test/
 - make && make test
 
 
