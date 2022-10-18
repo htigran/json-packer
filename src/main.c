@@ -79,7 +79,7 @@ int main()
     FILE* output_values_fp = configure_output_values();
     FILE* output_keys_fp = configure_output_keys();
 
-    parse_input(input_fp, output_values_fp, output_keys_fp);
+    process_input_file(input_fp, output_values_fp, output_keys_fp);
 
     fclose(log_fp);
     fclose(input_fp);
