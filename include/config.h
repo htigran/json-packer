@@ -3,7 +3,8 @@
 #define CONFIG_H
 
 #define INPUT_FILE_PATH "input.json"
-#define OUTPUT_FILE_PATH "output.tlv"
+#define OUTPUT_KEYS_FILE_PATH "keys.tlv"
+#define OUTPUT_VALUES_FILE_PATH "values.tlv"
 
 /* One of the following
  * LOG_TRACE

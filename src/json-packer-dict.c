@@ -7,7 +7,7 @@
 
 /// @brief
 /// @param node
-tlv_box_t* dict_serialize(yajl_val node)
+tlv_box_t* box_serialize_values(yajl_val node)
 {
     tlv_box_t* box = tlv_box_create();
 
@@ -47,6 +47,41 @@ tlv_box_t* dict_serialize(yajl_val node)
                 log_trace("bool: %s/FALSE", key, false);
                 tlv_box_put_bool(box, TLV_TYPE_BOOL, false);
             }
+        }
+    }
+    else
+    {
+        log_error("Error! Unknown input format !");
+        exit(1);
+    }
+    if (tlv_box_serialize(box) != 0)
+    {
+        log_error("Error! box serialize failed !");
+        exit(1);
+    }
+    log_info("box serialize success, %d bytes ", tlv_box_get_size(box));
+
+    return box;
+}
+
+/// @brief
+/// @param node
+tlv_box_t* box_serialize_keys(yajl_val node)
+{
+    tlv_box_t* box = tlv_box_create();
+
+    if ((node)->type == yajl_t_object)
+    {
+        log_trace("is object");
+        size_t nelem = node->u.object.len;
+        int ii;
+        for (ii = 0; ii < nelem; ++ii)
+        {
+            // key is just char *
+            const char *key = node->u.object.keys[ii]; // key
+
+            tlv_box_put_string(box, TLV_TYPE_STR, key);
+            
         }
     }
     else

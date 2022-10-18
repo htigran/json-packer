@@ -47,7 +47,7 @@ int tlv_box_putobject(tlv_box_t *box, int type, void *value, int length)
 
     if (key_list_add(box->m_list, type, object) != 0) {
         return -1;
-    }    
+    }
     box->m_serialized_bytes += sizeof(int) * 2 + length;
     
     return 0;

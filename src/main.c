@@ -38,15 +38,26 @@ FILE* configure_input()
     return input_fp;
 }
 
-FILE* configure_output()
+FILE* configure_output_values()
 {
-    FILE *output_fp = fopen(OUTPUT_FILE_PATH, "wb+");
-    if (output_fp == NULL)
+    FILE *output_values_fp = fopen(OUTPUT_VALUES_FILE_PATH, "wb+");
+    if (output_values_fp == NULL)
     {
-        log_error("Error! opening the output file at %s\n", OUTPUT_FILE_PATH);
+        log_error("Error! opening the output values file at %s\n", OUTPUT_VALUES_FILE_PATH);
         exit(1);
     }
-    return output_fp;
+    return output_values_fp;
+}
+
+FILE* configure_output_keys()
+{
+    FILE *output_keys_fp = fopen(OUTPUT_KEYS_FILE_PATH, "wb+");
+    if (output_keys_fp == NULL)
+    {
+        log_error("Error! opening the output keys file at %s\n", OUTPUT_KEYS_FILE_PATH);
+        exit(1);
+    }
+    return output_keys_fp;
 }
 
 void print_info()
@@ -65,12 +76,13 @@ int main()
     
     FILE* log_fp = configure_logger();
     FILE* input_fp = configure_input();
-    FILE* output_fp = configure_output();
+    FILE* output_values_fp = configure_output_values();
+    FILE* output_keys_fp = configure_output_keys();
 
-    parse_input(input_fp, output_fp);
+    parse_input(input_fp, output_values_fp, output_keys_fp);
 
     fclose(log_fp);
     fclose(input_fp);
-    fclose(output_fp);
+    fclose(output_values_fp);
     return 0;
 }
