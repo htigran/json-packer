@@ -1,18 +1,20 @@
+// system header files
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
+#include <unistd.h>
 
+// own header files
 #include <log.h>
 #include <yajl/yajl_tree.h>
-
 #include <config.h>
 #include "json-packer.h"
 
-#include <unistd.h>
 
-
+/// @brief configures the logger
+/// @return log file handler
 FILE* configure_logger()
 {
     FILE *log_fp = fopen(LOG_FILE_PATH, "w+");
@@ -27,6 +29,8 @@ FILE* configure_logger()
     return log_fp;
 }
 
+/// @brief opens the input file
+/// @return input file handler
 FILE* configure_input()
 {
     FILE *input_fp = fopen(INPUT_FILE_PATH, "rb");
@@ -38,6 +42,8 @@ FILE* configure_input()
     return input_fp;
 }
 
+/// @brief opens the output for values file
+/// @return output file handler
 FILE* configure_output_values()
 {
     FILE *output_values_fp = fopen(OUTPUT_VALUES_FILE_PATH, "wb+");
@@ -49,6 +55,8 @@ FILE* configure_output_values()
     return output_values_fp;
 }
 
+/// @brief opens the output for keys file
+/// @return output file handler
 FILE* configure_output_keys()
 {
     FILE *output_keys_fp = fopen(OUTPUT_KEYS_FILE_PATH, "wb+");
@@ -60,7 +68,8 @@ FILE* configure_output_keys()
     return output_keys_fp;
 }
 
-void print_info()
+/// @brief prints current working directory in logs
+void log_cwd()
 {
     char cwd[PATH_MAX];
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
@@ -72,17 +81,21 @@ void print_info()
 
 int main()
 {
-    print_info();
+    log_cwd();
     
+    // open files
     FILE* log_fp = configure_logger();
     FILE* input_fp = configure_input();
     FILE* output_values_fp = configure_output_values();
     FILE* output_keys_fp = configure_output_keys();
 
+    // process input and produce outputs
     process_input_file(input_fp, output_values_fp, output_keys_fp);
 
+    // close files
     fclose(log_fp);
     fclose(input_fp);
     fclose(output_values_fp);
+
     return 0;
 }
