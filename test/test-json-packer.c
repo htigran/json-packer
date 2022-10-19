@@ -1,3 +1,4 @@
+// system headers
 #include <unity.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,20 +6,23 @@
 #include <unistd.h>
 #include <limits.h>
 
+// own header files
 #include <log.h>
 #include <yajl/yajl_tree.h>
 #include <tlv_box.h>
 #include <json-packer.h>
 #include <config.h>
 
+// for testing only
 #include "json-packer.c"
 #include "json-packer-dict.c"
 
-
+// functions array of two.
 void (*test_by_line[2])(char*, int);
 
 // ====================== TEST VALUES ========================
 
+// verify 1 line of the input (Values)
 void test_values_line_1(char* line, int read)
 {
     tlv_box_t* box = tlv_box_parse(line, read - 1);
@@ -41,6 +45,7 @@ void test_values_line_1(char* line, int read)
     tlv_box_destroy(box);
 }
 
+// verify 2nd line of input (Values)
 void test_values_line_2(char* line, int read)
 {
     tlv_box_t* box = tlv_box_parse(line, read - 1);
@@ -58,6 +63,7 @@ void test_values_line_2(char* line, int read)
     tlv_box_destroy(box);
 }
 
+// open output file and check line by line (Values)
 void test_verify_values()
 {
     test_by_line[0] = test_values_line_1;
@@ -86,6 +92,7 @@ void test_verify_values()
 
 // ====================== TEST KEYS ========================
 
+// verify 1 line of the input (Keys)
 void test_keys_line_1(char* line, int read)
 {
     tlv_box_t* box = tlv_box_parse(line, read - 1);
@@ -99,6 +106,7 @@ void test_keys_line_1(char* line, int read)
     tlv_box_destroy(box);
 }
 
+// verify 2nd line of the input (Keys)
 void test_keys_line_2(char* line, int read)
 {
     tlv_box_t* box = tlv_box_parse(line, read - 1);
@@ -112,6 +120,7 @@ void test_keys_line_2(char* line, int read)
     tlv_box_destroy(box);
 }
 
+// open output file and check line by line (Keys)
 void test_verify_keys()
 {
     test_by_line[0] = test_keys_line_1;
@@ -138,10 +147,11 @@ void test_verify_keys()
     fclose(output_keys_fp);
 }
 
+// automatically called before each test
 void setUp(void) {
-
 }
 
+// automatically called after each test
 void tearDown(void) {
 }
 
