@@ -63,7 +63,7 @@ yajl_val parse_line(char *line, size_t len)
 /// @brief This function processes given input file handler and 
 ///        produces keys and values output files.
 void process_input_file(FILE* input_fp, FILE* output_values_fp, 
-                       FILE* output_keys_fp)
+                        FILE* output_keys_fp)
 {
     log_info("Parsing the input");
     ssize_t read;
