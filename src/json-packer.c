@@ -1,27 +1,27 @@
 
-// includes from our own projects
-#include <config.h>
-
-// installed libraries
+// system header files
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-// built by us
+// own header files
 #include <log.h>
 #include <tlv_box.h>
-
+#include <config.h>
 #include "json-packer-dict.h"
 
+
+/// @brief Stores given serialized tlv box in a file
+/// @param box  tlv box to store
+/// @param output_fp filepointer where to store
 void tlv_box_store(tlv_box_t* box, FILE* output_fp)
 {
     char* serialized_buffer = tlv_box_get_buffer(box);
-    
     int buffer_size = tlv_box_get_size(box);
+    // write into file
     size_t written_size = fwrite(serialized_buffer, sizeof(char),
-                                buffer_size, output_fp);
-    
+                                 buffer_size, output_fp);
     if (written_size != buffer_size) 
     {
         log_error(
@@ -31,21 +31,19 @@ void tlv_box_store(tlv_box_t* box, FILE* output_fp)
     } else {
         log_info("Written %d bytes", written_size);
     }
-    
+    // we add newline to distinguish lines
     fputc('\n', output_fp);
 }
 
-/// @brief
-/// @param line
-/// @param len
+/// @brief parses given line as a json
+/// @param line to parse
+/// @param len the line size
 yajl_val parse_line(char *line, size_t len)
 {
-    yajl_val node;
-    char errbuf[1024];
+    char errbuf[MAX_LINE_SIZE];
 
-    /* we have the whole config file in memory.  let's parse it ... */
-    node = yajl_tree_parse((const char *)line, errbuf, sizeof(errbuf));
-    /* parse error handling */
+    // we have the whole line in memory.  let's parse it
+    yajl_val node = yajl_tree_parse((const char *)line, errbuf, sizeof(errbuf));
     if (node == NULL)
     {
         log_error("Error! Can't parse the input file at %s", INPUT_FILE_PATH);
@@ -62,9 +60,10 @@ yajl_val parse_line(char *line, size_t len)
     return node;
 }
 
-/// @brief
-/// @return
-int process_input_file(FILE* input_fp, FILE* output_values_fp, FILE* output_keys_fp)
+/// @brief This function processes given input file handler and 
+///        produces keys and values output files.
+void process_input_file(FILE* input_fp, FILE* output_values_fp, 
+                        FILE* output_keys_fp)
 {
     log_info("Parsing the input");
     ssize_t read;
@@ -73,20 +72,26 @@ int process_input_file(FILE* input_fp, FILE* output_values_fp, FILE* output_keys
 
     while ((read = getline(&line, &len, input_fp)) != -1)
     {
+        // parse json
         yajl_val node = parse_line(line, len);
+
         log_info("Retrieved line of length %zu:\n", read);
         log_info("%s", line);
 
+        // serialize parsed nodes
         tlv_box_t* box_values = box_serialize_values(node);
         tlv_box_t* box_keys = box_serialize_keys(node);
 
+        // store serialized boxes in files
         tlv_box_store(box_values, output_values_fp);
         tlv_box_store(box_keys, output_keys_fp);
 
+        // cleanup
         tlv_box_destroy(box_values);
         tlv_box_destroy(box_keys);
         yajl_tree_free(node);
     }
+
+    // cleanup
     free(line);
-    return 0;
 }

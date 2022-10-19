@@ -1,16 +1,20 @@
 
+// system header files
+
+// own header files
 #include <tlv_box.h>
 #include <log.h>
-
 #include "json-packer-dict.h"
 #include <config.h>
 
-/// @brief
-/// @param node
+
+/// @brief parses a yajl tree root node and generates a serialized tlv box
+///        out of json values
+/// @param node - yajl (json) node
+/// @return serialized tlv_box that can be stored in a file
 tlv_box_t* box_serialize_values(yajl_val node)
 {
     tlv_box_t* box = tlv_box_create();
-
     if ((node)->type == yajl_t_object)
     {
         log_trace("is object");
@@ -64,8 +68,10 @@ tlv_box_t* box_serialize_values(yajl_val node)
     return box;
 }
 
-/// @brief
-/// @param node
+/// @brief parses a yajl tree root node and generates a serialized tlv box
+///        out of json keys
+/// @param node - yajl (json) node
+/// @return serialized tlv_box that can be stored in a file
 tlv_box_t* box_serialize_keys(yajl_val node)
 {
     tlv_box_t* box = tlv_box_create();
@@ -79,9 +85,7 @@ tlv_box_t* box_serialize_keys(yajl_val node)
         {
             // key is just char *
             const char *key = node->u.object.keys[ii]; // key
-
             tlv_box_put_string(box, TLV_TYPE_STR, key);
-            
         }
     }
     else
