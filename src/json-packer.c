@@ -1,3 +1,5 @@
+/// @file
+/// @brief The implementation of json packer functionality
 
 // system header files
 #include <stdio.h>
@@ -12,9 +14,9 @@
 #include "json-packer-dict.h"
 
 
-/// @brief Stores given serialized tlv box in a file
-/// @param box  tlv box to store
-/// @param output_fp filepointer where to store
+// @brief Stores given serialized tlv box in a file
+// @param box  tlv box to store
+// @param output_fp filepointer where to store
 void tlv_box_store(tlv_box_t* box, FILE* output_fp)
 {
     char* serialized_buffer = tlv_box_get_buffer(box);
@@ -35,9 +37,9 @@ void tlv_box_store(tlv_box_t* box, FILE* output_fp)
     fputc('\n', output_fp);
 }
 
-/// @brief parses given line as a json
-/// @param line to parse
-/// @param len the line size
+// @brief parses given line as a json
+// @param line to parse
+// @param len the line size
 yajl_val parse_line(char *line, size_t len)
 {
     char errbuf[MAX_LINE_SIZE];
@@ -60,8 +62,8 @@ yajl_val parse_line(char *line, size_t len)
     return node;
 }
 
-/// @brief This function processes given input file handler and 
-///        produces keys and values output files.
+// @brief This function processes given input file handler and 
+//        produces keys and values output files.
 void process_input_file(FILE* input_fp, FILE* output_values_fp, 
                         FILE* output_keys_fp)
 {

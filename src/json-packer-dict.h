@@ -1,3 +1,5 @@
+/// @file
+/// @brief The header file of json packer dictionary
 
 #ifndef JSON_PACKER_DICT_H
 #define JSON_PACKER_DICT_H

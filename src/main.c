@@ -1,3 +1,5 @@
+/// @file
+/// @brief The entry point, the main function
 // system header files
 #include <stdio.h>
 #include <string.h>

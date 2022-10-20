@@ -1,3 +1,6 @@
+/// @file
+/// @brief The json packer public header file
+
 #ifndef JSON_PACKER_H
 #define JSON_PACKER_H
 

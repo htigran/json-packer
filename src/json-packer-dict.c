@@ -1,3 +1,5 @@
+/// @file
+/// @brief The source file of json packer dictionary
 
 // system header files
 
@@ -8,10 +10,10 @@
 #include <config.h>
 
 
-/// @brief parses a yajl tree root node and generates a serialized tlv box
-///        out of json values
-/// @param node - yajl (json) node
-/// @return serialized tlv_box that can be stored in a file
+// @brief parses a yajl tree root node and generates a serialized tlv box
+//        out of json values
+// @param node - yajl (json) node
+// @return serialized tlv_box that can be stored in a file
 tlv_box_t* box_serialize_values(yajl_val node)
 {
     tlv_box_t* box = tlv_box_create();
@@ -68,10 +70,10 @@ tlv_box_t* box_serialize_values(yajl_val node)
     return box;
 }
 
-/// @brief parses a yajl tree root node and generates a serialized tlv box
-///        out of json keys
-/// @param node - yajl (json) node
-/// @return serialized tlv_box that can be stored in a file
+// @brief parses a yajl tree root node and generates a serialized tlv box
+//        out of json keys
+// @param node - yajl (json) node
+// @return serialized tlv_box that can be stored in a file
 tlv_box_t* box_serialize_keys(yajl_val node)
 {
     tlv_box_t* box = tlv_box_create();
