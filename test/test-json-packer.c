@@ -72,7 +72,7 @@ void test_verify_values()
     FILE *output_values_fp = fopen(OUTPUT_VALUES_FILE_PATH, "rb");
     if (output_values_fp == NULL) {
         printf("=== > ERROR opening the file at %s", OUTPUT_VALUES_FILE_PATH);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     int read = 0;
@@ -129,7 +129,7 @@ void test_verify_keys()
     FILE *output_keys_fp = fopen(OUTPUT_KEYS_FILE_PATH, "rb");
     if (output_keys_fp == NULL) {
         printf("=== > ERROR opening the file at %s", OUTPUT_KEYS_FILE_PATH);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     int read = 0;
