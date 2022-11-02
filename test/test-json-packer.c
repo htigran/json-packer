@@ -9,7 +9,6 @@
 // own header files
 #include <log.h>
 #include <yajl/yajl_tree.h>
-#include <tlv_box.h>
 #include <json-packer.h>
 #include <config.h>
 
@@ -25,42 +24,11 @@ void (*test_by_line[2])(char*, int);
 // verify 1 line of the input (Values)
 void test_values_line_1(char* line, int read)
 {
-    tlv_box_t* box = tlv_box_parse(line, read - 1);
-    double read_double = (double)0.0;
-    tlv_box_get_double(box, TLV_TYPE_DOUBLE, &read_double);
-    TEST_ASSERT_EQUAL_DOUBLE(42.0, read_double);
-    
-    int size = 6;
-    char* read_str = malloc(size);
-    tlv_box_get_string(box, TLV_TYPE_STR, read_str, &size);
-    TEST_ASSERT_EQUAL_STRING_LEN("value", read_str, size);
-    TEST_ASSERT_EQUAL_STRING("value", read_str);
-    
-    bool test_bool;
-    tlv_box_get_bool(box, TLV_TYPE_BOOL, &test_bool);
-    TEST_ASSERT_EQUAL(true, test_bool);
-    
-    log_info("Retrieved line of length %zu:\n", read);
-    
-    tlv_box_destroy(box);
 }
 
 // verify 2nd line of input (Values)
 void test_values_line_2(char* line, int read)
 {
-    tlv_box_t* box = tlv_box_parse(line, read - 1);
-    double read_double = (double)0.0;
-    tlv_box_get_double(box, TLV_TYPE_DOUBLE, &read_double);
-    TEST_ASSERT_EQUAL_DOUBLE(3221, read_double);
-    
-    int size = 8;
-    char* read_str = malloc(size);
-    tlv_box_get_string(box, TLV_TYPE_STR, read_str, &size);
-    TEST_ASSERT_EQUAL_STRING_LEN("dsewtew", read_str, size);
-    
-    log_info("Retrieved line of length %zu:\n", read);
-    
-    tlv_box_destroy(box);
 }
 
 // open output file and check line by line (Values)
@@ -95,29 +63,11 @@ void test_verify_values()
 // verify 1 line of the input (Keys)
 void test_keys_line_1(char* line, int read)
 {
-    tlv_box_t* box = tlv_box_parse(line, read - 1);
-    int size = 5;
-    char* read_str = malloc(size);
-    tlv_box_get_string(box, TLV_TYPE_STR, read_str, &size);
-    TEST_ASSERT_EQUAL_STRING_LEN("key1", read_str, size);
-    
-    log_info("Retrieved line of length %zu:\n", read);
-    
-    tlv_box_destroy(box);
 }
 
 // verify 2nd line of the input (Keys)
 void test_keys_line_2(char* line, int read)
 {
-    tlv_box_t* box = tlv_box_parse(line, read - 1);
-    int size = 6;
-    char* read_str = malloc(size);
-    tlv_box_get_string(box, TLV_TYPE_STR, read_str, &size);
-    TEST_ASSERT_EQUAL_STRING_LEN("sadsf", read_str, size);
-    
-    log_info("Retrieved line of length %zu:\n", read);
-    
-    tlv_box_destroy(box);
 }
 
 // open output file and check line by line (Keys)

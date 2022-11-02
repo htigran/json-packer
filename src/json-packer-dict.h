@@ -43,31 +43,14 @@ typedef struct json_value_data_array_type
     size_t size;
 } json_value_data_array_t;
 
-
-
-
-/// @brief parses a yajl tree root node and generates a serialized tlv box
-///        out of json values
-/// @param node - yajl (json) node
-/// @return serialized tlv_box that can be stored in a file
-tlv_box_t* box_serialize_values(yajl_val node);
-
-/// @brief parses a yajl tree root node and generates a serialized tlv box
-///        out of json keys
-/// @param node - yajl (json) node
-/// @return serialized tlv_box that can be stored in a file
-tlv_box_t* box_serialize_keys(yajl_val node);
-
-// @brief parses a yajl tree root node and generates a serialized tlv box
-//        out of json keys
+// @brief parses a yajl tree root node
 // @param node - yajl (json) node
-// @return serialized tlv_box that can be stored in a file
+// @return 
 json_key_data_array_t json_parse_keys(yajl_val node);
 
-// @brief parses a yajl tree root node and generates a serialized tlv box
-//        out of json keys
+// @brief parses a yajl tree root node
 // @param node - yajl (json) node
-// @return serialized tlv_box that can be stored in a file
+// @return 
 json_value_data_array_t json_parse_values(json_key_data_array_t all_keys, yajl_val node);
 
 #endif // JSON_PACKER_DICT_H

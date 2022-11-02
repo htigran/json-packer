@@ -12,7 +12,6 @@
 
 ## Known issues
 
-- TLV library used contains some issues that are not allowing multiple items to be serialized of the same type
 - A requirement of storing content in C dictionary is not fully implemented yet
 - more...
 
