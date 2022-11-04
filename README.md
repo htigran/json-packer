@@ -12,7 +12,7 @@
 
 ## Known issues
 
-- 
+- values and keys should be encoded/decoded with same functions
 - more...
 
 ## NOTE
