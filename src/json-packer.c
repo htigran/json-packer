@@ -66,6 +66,7 @@ void save_json_keys(json_key_data_array_t all_keys, FILE* output_keys_fp)
         fputc(strlen(key), output_keys_fp);
         fputs(key, output_keys_fp);
     }
+    fputc('\n', output_keys_fp);
 }
 
 void save_json_values(json_value_data_array_t all_values, FILE* output_values_fp)
@@ -130,6 +131,7 @@ void save_json_values(json_value_data_array_t all_values, FILE* output_values_fp
             fwrite((const void *)&type, sizeof(int), 1, output_values_fp); 
         }
     }
+    fputc('\n', output_values_fp);
 }
 
 // @brief This function processes given input file handler and 

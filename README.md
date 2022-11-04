@@ -12,7 +12,7 @@
 
 ## Known issues
 
-- A requirement of storing content in C dictionary is not fully implemented yet
+- 
 - more...
 
 ## NOTE

@@ -11,7 +11,7 @@
 #include "json-packer-dict.h"
 
 
-char* get_copy(const char* src)
+char* make_str_copy(const char* src)
 {
     char* dest = malloc(strlen(src) * sizeof(char));
     strcpy(dest, src);
@@ -35,7 +35,7 @@ json_key_data_array_t json_parse_keys(yajl_val node)
     json_key_data_t* all_keys = malloc(nelem * sizeof(json_key_data_t));
     for (int i = 0; i < nelem; ++i)
     {
-        all_keys[i].key = get_copy(node->u.object.keys[i]); // key
+        all_keys[i].key = make_str_copy(node->u.object.keys[i]); // key
         all_keys[i].data = i + 1;
     }
     
@@ -100,7 +100,7 @@ json_value_data_array_t json_parse_values(json_key_data_array_t all_keys, yajl_v
         {
             log_trace("string: {%s:%s}", key, val->u.string);
             all_values[i].type = JSON_STR_TYPE;
-            all_values[i].data.s = get_copy(val->u.string);
+            all_values[i].data.s = make_str_copy(val->u.string);
         }
         else if (YAJL_IS_TRUE(val))
         {
