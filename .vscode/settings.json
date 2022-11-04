@@ -4,7 +4,7 @@
         "iosfwd": "c",
         "__node_handle": "c",
         "config.h": "c",
-        "json-packer-dict.h": "c",
+        "json-parser.h": "c",
         "unity.h": "c"
     }
 }

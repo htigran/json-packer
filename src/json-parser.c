@@ -8,15 +8,10 @@
 // own header files
 #include <log.h>
 #include <config.h>
-#include "json-packer-dict.h"
 
+#include "json-parser.h"
+#include "utility.h"
 
-char* make_str_copy(const char* src)
-{
-    char* dest = malloc(strlen(src) * sizeof(char));
-    strcpy(dest, src);
-    return dest;
-}
 
 // @brief parses a yajl tree root node
 // @param node - yajl (json) node
@@ -61,7 +56,8 @@ int json_key_find_idx(const char *key, json_key_data_array_t all_keys)
 // @brief parses a yajl tree root node
 // @param node - yajl (json) node
 // @return
-json_value_data_array_t json_parse_values(json_key_data_array_t all_keys, yajl_val node)
+json_value_data_array_t json_parse_values(json_key_data_array_t all_keys,
+                                            yajl_val node)
 {
     if ((node)->type != yajl_t_object)
     {
