@@ -23,7 +23,7 @@ FILE* configure_logger()
     if (log_fp == NULL)
     {
         log_error("Error! opening the log file at %s\n", LOG_FILE_PATH);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     log_set_quiet(LOG_QUITE);
     log_set_level(LOG_LEVEL);
@@ -39,7 +39,7 @@ FILE* configure_input()
     if (input_fp == NULL)
     {
         log_error("Error! opening the config file at %s\n", INPUT_FILE_PATH);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     return input_fp;
 }
@@ -52,7 +52,7 @@ FILE* configure_output_values()
     if (output_values_fp == NULL)
     {
         log_error("Error! opening the output values file at %s\n", OUTPUT_VALUES_FILE_PATH);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     return output_values_fp;
 }
@@ -65,7 +65,7 @@ FILE* configure_output_keys()
     if (output_keys_fp == NULL)
     {
         log_error("Error! opening the output keys file at %s\n", OUTPUT_KEYS_FILE_PATH);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     return output_keys_fp;
 }

@@ -27,7 +27,7 @@ file(GLOB test_SRCS
 # Build the target from the list of all sources
 add_executable(test-json-packer ${test_SRCS})
 
-target_link_libraries(test-json-packer PRIVATE unity yajl tlvlib logclib)
+target_link_libraries(test-json-packer PRIVATE unity yajl logclib)
 
 add_test(NAME test-json-packer
          COMMAND test-json-packer)

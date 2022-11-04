@@ -29,20 +29,7 @@ project(
 include_directories(
         ${PROJECT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/src
-        ${PROJECT_SOURCE_DIR}/lib/TLV/c
 )
-
-# Build TLV lib
-#================================================================
-file(GLOB tlvlib_SRCS
-        ${PROJECT_SOURCE_DIR}/lib/TLV/c/*.h
-        ${PROJECT_SOURCE_DIR}/lib/TLV/c/*.c
-        )
-add_library(tlvlib SHARED
-  ${tlvlib_SRCS}
-)
-target_include_directories(tlvlib PRIVATE ${PROJECT_SOURCE_DIR}/lib/TLV/c/)
-#================================================================
 
 # Build Log.c lib
 #================================================================
@@ -80,7 +67,7 @@ file(GLOB main_SRCS
 # Build the target from the list of all sources
 add_executable(json-packer ${main_SRCS})
 # Make sure you link your targets with this command. It can also link libraries and even flags, so linking a target that does not exist will not give a configure-time error.
-target_link_libraries(json-packer PRIVATE yajl tlvlib logclib)
+target_link_libraries(json-packer PRIVATE yajl logclib)
 #================================================================
 
 

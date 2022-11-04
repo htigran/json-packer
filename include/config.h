@@ -23,12 +23,6 @@
 #define LOG_QUITE     false // only prints in file not in terminal
 #define LOG_USE_COLOR       // use colouring for log lines
 
-// TLV library configuration
-#define TLV_TYPE_DOUBLE 0x00
-#define TLV_TYPE_INT 0x01
-#define TLV_TYPE_STR 0x02
-#define TLV_TYPE_BOOL 0x03
-
 // Maximum input line size. Each line contains a single Json document.
 #define MAX_LINE_SIZE 100
 
