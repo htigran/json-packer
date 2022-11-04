@@ -53,6 +53,43 @@ int json_key_find_idx(const char *key, json_key_data_array_t all_keys)
     return -1;
 }
 
+void extract_json_item(json_value_data_t* all_values,
+                       yajl_val node,
+                       const char *key,
+                       size_t i)
+{
+    // values can be different types
+    yajl_val val = node->u.object.values[i]; // val
+    if (YAJL_IS_INTEGER(val))
+    {
+        log_trace("int: {%s:%d}", key, val->u.number.i);
+        all_values[i].type = JSON_INT_TYPE;
+        all_values[i].data.i = val->u.number.i;
+    }
+    else if (YAJL_IS_DOUBLE(val))
+    {
+        log_trace("double: {%s:%f}", key, val->u.number.d);
+        all_values[i].type = JSON_DOUBLE_TYPE;
+        all_values[i].data.d = val->u.number.d;
+    }
+    else if (YAJL_IS_STRING(val))
+    {
+        log_trace("string: {%s:%s}", key, val->u.string);
+        all_values[i].type = JSON_STR_TYPE;
+        all_values[i].data.s = make_str_copy(val->u.string);
+    }
+    else if (YAJL_IS_TRUE(val))
+    {
+        log_trace("bool: {%s:TRUE}", key, true);
+        all_values[i].type = JSON_BOOL_TYPE_TRUE;
+    }
+    else if (YAJL_IS_FALSE(val))
+    {
+        log_trace("bool: {%s:FALSE}", key, false);
+        all_values[i].type = JSON_BOOL_TYPE_FALSE;
+    }
+}
+
 // @brief parses a yajl tree root node
 // @param node - yajl (json) node
 // @return
@@ -69,7 +106,8 @@ json_value_data_array_t json_parse_values(json_key_data_array_t all_keys,
     json_value_data_array_t result;
     size_t nelem = node->u.object.len;
     json_value_data_t* all_values = malloc(nelem * sizeof(json_value_data_t));
-    for (int i = 0; i < nelem; ++i)
+    
+    for (int i = 0; i < all_keys.size; ++i)
     {
         const char *key = node->u.object.keys[i]; // key
         int key_idx = json_key_find_idx(key, all_keys);
@@ -78,37 +116,9 @@ json_value_data_array_t json_parse_values(json_key_data_array_t all_keys,
             exit(EXIT_FAILURE);
         }
         all_values[i].id = key_idx;
-        // values can be different types
-        yajl_val val = node->u.object.values[i]; // val
-        if (YAJL_IS_INTEGER(val))
-        {
-            log_trace("int: {%s:%d}", key, val->u.number.i);
-            all_values[i].type = JSON_INT_TYPE;
-            all_values[i].data.i = val->u.number.i;
-        }
-        else if (YAJL_IS_DOUBLE(val))
-        {
-            log_trace("double: {%s:%f}", key, val->u.number.d);
-            all_values[i].type = JSON_DOUBLE_TYPE;
-            all_values[i].data.d = val->u.number.d;
-        }
-        else if (YAJL_IS_STRING(val))
-        {
-            log_trace("string: {%s:%s}", key, val->u.string);
-            all_values[i].type = JSON_STR_TYPE;
-            all_values[i].data.s = make_str_copy(val->u.string);
-        }
-        else if (YAJL_IS_TRUE(val))
-        {
-            log_trace("bool: {%s:TRUE}", key, true);
-            all_values[i].type = JSON_BOOL_TYPE_TRUE;
-        }
-        else if (YAJL_IS_FALSE(val))
-        {
-            log_trace("bool: {%s:FALSE}", key, false);
-            all_values[i].type = JSON_BOOL_TYPE_FALSE;
-        }
+        extract_json_item(all_values, node, key, i);
     }
+
     log_info("All json keys are successfully parsed.");
     result.size = nelem;
     result.items = all_values;
