@@ -12,60 +12,12 @@
 #include <yajl/yajl_tree.h>
 #include <json-packer.h>
 #include <config.h>
+#include <tlv.h>
 
-// for testing only
-#include "json-packer.c"
-#include "json-packer-dict.c"
 
 // functions array of two.
 void (*test_by_line[2])(char*, int);
 
-void parse_test_line(char* result, const char* buffer)
-{
-    size_t offset = 0;
-    int type, length;
-    char* value;
-    char* result_ptr = result;
-    while ((char)*(buffer+offset) != '\n')
-    {
-        memcpy(&type, buffer+offset, sizeof(int));
-        offset += sizeof(int);
-        if (type != JSON_BOOL_TYPE_TRUE && type != JSON_BOOL_TYPE_FALSE)
-        {
-            memcpy(&length, buffer+offset, sizeof(int));
-            offset += sizeof(int);
-            value = malloc(length);
-            memcpy(value, buffer+offset, length);
-            offset += length;
-        }
-        
-        if (type == JSON_INT_TYPE)
-        {
-            sprintf(result_ptr, "[%d,%d,%d]", type, length, (int)*value);
-        }
-        else if (type == JSON_DOUBLE_TYPE)
-        {
-            sprintf(result_ptr, "[%d,%d,%f]", type, length, (double)*value);
-        }
-        else if (type == JSON_STR_TYPE)
-        {
-            sprintf(result_ptr, "[%d,%d,%s]", type, length, (char *)value);
-        }
-        else if (type == JSON_BOOL_TYPE_TRUE)
-        {
-            sprintf(result_ptr, "[%d,TRUE]", type);
-        }
-        else if (type == JSON_BOOL_TYPE_FALSE)
-        {
-            sprintf(result_ptr, "[%d,FALSE]", type);
-        }
-        if (type != JSON_BOOL_TYPE_TRUE && type != JSON_BOOL_TYPE_FALSE)
-        {
-            free(value);
-        }
-        result_ptr += strlen(result_ptr);
-    }
-}
 
 // ====================== TEST VALUES ========================
 
@@ -75,7 +27,7 @@ void test_values_line_1(char* buffer, int lenght)
     printf("values 1: %s\n", buffer);
     const char expected[] = "[3,5,value][2,4,42][4,TRUE]";
     char* actual = malloc(sizeof(expected));
-    parse_test_line(actual, buffer);
+    decode_values(actual, buffer);
     TEST_ASSERT_EQUAL_STRING(expected, actual);
 }
 
@@ -85,7 +37,7 @@ void test_values_line_2(char* buffer, int lenght)
     printf("values 1: %s\n", buffer);
     const char expected[] = "[3,7,dsewtew][2,4,-107][3,7,dsfewew]";
     char* actual = malloc(sizeof(expected));
-    parse_test_line(actual, buffer);
+    decode_values(actual, buffer);
     TEST_ASSERT_EQUAL_STRING(expected, actual);
 }
 

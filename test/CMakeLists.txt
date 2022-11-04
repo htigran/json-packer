@@ -20,9 +20,10 @@ include_directories("${yajl_SOURCE_DIR}/src/api")
 
 # Just add whatever is in those folders.
 file(GLOB test_SRCS
-        "${PROJECT_SOURCE_DIR}/include/*.h"
-        "${PROJECT_SOURCE_DIR}/test/*.c"
-        )
+    "${PROJECT_SOURCE_DIR}/src/*.c"
+    "${PROJECT_SOURCE_DIR}/test/*.c"
+  )
+list(REMOVE_ITEM test_SRCS "${PROJECT_SOURCE_DIR}/src/main.c")
 
 # Build the target from the list of all sources
 add_executable(test-json-packer ${test_SRCS})

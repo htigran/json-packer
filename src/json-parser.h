@@ -6,6 +6,7 @@
 
 // TODO see if we can get rid of this include
 #include <yajl/yajl_tree.h>
+#include <stdbool.h>
 
 #define JSON_DOUBLE_TYPE 1
 #define JSON_INT_TYPE 2
